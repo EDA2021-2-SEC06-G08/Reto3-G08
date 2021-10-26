@@ -36,10 +36,35 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Crear el catálogo")
+    print("2- Cargar información en el catálogo")
+    print("3- REQ. 1: Contar los avistamientos en una ciudad")
+    print("4- REQ. 2: Contar los avistamientos por duración")
+    print("5. REQ. 3: Contar avistamientos por Hora/Minutos del día")
+    print("6. REQ. 4: Contar los avistamientos en un rango de fechas")
+    print("7. REQ. 5: Contar los avistamientos de una Zona Geográfica")  
+    print("8. REQ. 6 (BONO): Visualizar los avistamientos de una zona geográfica")  
+    print("0- Salir")
 
 catalog = None
+file = 'UFOS//UFOS-utf8-small.csv'
+
+
+#funciones de impresión
+def printFirst5 (catalog):
+    lista = lt.subList(catalog['avistamientos'], 1, 5)
+    i = 1
+    for avista in lt.iterator(lista):
+        print(f"{i}. {avista}\n")
+        i +=1
+
+def printLast5 (catalog):
+    lista = lt.subList(catalog['avistamientos'], lt.size(catalog['avistamientos'])-4, 5)
+    i = 1
+    for avista in lt.iterator(lista):
+        print(f"{i}. {avista}\n")
+        i +=1
+
 
 """
 Menu principal
@@ -48,10 +73,18 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("\nCreando el catálogo ....\n")
+        catalog = controller.initCatalog()
 
     elif int(inputs[0]) == 2:
-        pass
+        print("\nCargando información de avistamientos ....")
+        controller.loadData(catalog, file)
+        print("\nAvistamientos cargados: "+ str(lt.size(catalog['avistamientos'])))
+        print("\nPrimeros 5 avistamientos: \n")
+        printFirst5(catalog)
+        print("\nÚltimos 5 avistamientos: \n")
+        printLast5(catalog)
+        print("")
 
     else:
         sys.exit(0)

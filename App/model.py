@@ -38,8 +38,19 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog():
+    catalog = {'avistamientos': None}
+    catalog ['avistamientos'] = lt.newList('ARRAY_LIST')
+
+    return catalog
+    
 
 # Funciones para agregar informacion al catalogo
+
+def addAvist(catalog, avist):
+    lt.addLast(catalog['avistamientos'], avist)
+    return catalog
+
 
 # Funciones para creacion de datos
 
