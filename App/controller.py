@@ -30,7 +30,6 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo
-
 def initCatalog():
     return model.newCatalog()
 
@@ -46,3 +45,5 @@ def loadData(catalog, file):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+def avistaCity(catalog, city):
+    return model.avistaCity(catalog, city) 

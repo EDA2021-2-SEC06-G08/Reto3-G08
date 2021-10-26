@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.ADT import orderedmap as om
 assert cf
 
 """
@@ -39,9 +40,11 @@ los mismos.
 
 # Construccion de modelos
 def newCatalog():
-    catalog = {'avistamientos': None}
-    catalog ['avistamientos'] = lt.newList('ARRAY_LIST')
-
+    catalog = {'avistamientos': None,
+                'city': None}
+    catalog['avistamientos'] = lt.newList('ARRAY_LIST')
+    catalog['city'] = om.newMap('RBT')
+    
     return catalog
     
 
@@ -49,13 +52,19 @@ def newCatalog():
 
 def addAvist(catalog, avist):
     lt.addLast(catalog['avistamientos'], avist)
-    return catalog
 
+    if om.contains(catalog['city'], avist['city']):
+        lt.addLast(me.getValue(om.get(catalog['city'], avist['city'])), avist)
+    else:
+        om.put(catalog['city'], avist['city'], lt.newList("ARRAY_LIST"))
+        lt.addLast(me.getValue(om.get(catalog['city'], avist['city'])),avist)
+    return catalog
 
 # Funciones para creacion de datos
 
 # Funciones de consulta
-
+def avistaCity(catalog, city):
+    pass
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento

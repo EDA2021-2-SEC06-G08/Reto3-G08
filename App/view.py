@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import orderedmap as om
 assert cf
 
 
@@ -65,6 +66,8 @@ def printLast5 (catalog):
         print(f"{i}. {avista}\n")
         i +=1
 
+def printAvistaCity(avistamientos, city):
+    pass
 
 """
 Menu principal
@@ -85,6 +88,17 @@ while True:
         print("\nÚltimos 5 avistamientos: \n")
         printLast5(catalog)
         print("")
+    
+    elif  int(inputs[0]) == 3:
+        city = input("\nIngrese el nombre de la ciudad a consultar: ")
+        avistamientos = controller.avistaCity(catalog, city)
+        #if avistamientos:
+        print("\nAltura del árbol: " + str(om.height(catalog['city'])) )
+        print("Elementos en el árbol: " + str(om.size(catalog['city'])) +"\n")
+        printAvistaCity (avistamientos, city)
+
+        #else:
+            #print("\nIngrese una ciudad disponible")
 
     else:
         sys.exit(0)
