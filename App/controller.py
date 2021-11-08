@@ -45,5 +45,17 @@ def loadData(catalog, file):
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
-def avistaCity(catalog, city):
-    return model.avistaCity(catalog, city) 
+def countSightingsCity(catalog, city):
+    return model.countSightingsCity(catalog, city) 
+
+def countSightingsDuration(catalog ,lower, upper):
+    return model.countSightingsDuration(catalog,lower, upper)
+
+def countSightingsDateRange(catalog, lowDate, upDate):
+    return model.countSightingsDateRange(catalog, lowDate, upDate)
+
+def countSightingsZone(catalog, latmin, latmax, longmin, longmax):
+    return model.countSightingsZone(catalog, latmin, latmax, longmin, longmax)
+
+def createMapReq5(catalog, latmin, latmax, longmin, longmax):
+    return model.createMapReq5(catalog, latmin, latmax, longmin, longmax)

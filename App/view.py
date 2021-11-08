@@ -25,6 +25,8 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 from DISClib.ADT import orderedmap as om
+from prettytable import PrettyTable
+import prettytable as pt
 assert cf
 
 
@@ -66,8 +68,123 @@ def printLast5 (catalog):
         print(f"{i}. {avista}\n")
         i +=1
 
-def printAvistaCity(avistamientos, city):
-    pass
+def printAvistaCity(req1, city):
+    table = PrettyTable()
+    print(f"{'='*10} Req No. 1 Inputs {'='*10}")
+    print(f"UFO Sightings in the city of: {city}",end="\n\n")
+    print(f"{'='*10} Req No. 1 Answers {'='*10}")
+    print(f"There are {req1[0]} different cities with UFO sightings...")
+    print(f"The city with most UFO sightings is: {req1[1][0]} with {req1[1][1]}",end="\n\n")
+    print(f"There are {req1[2]} sightings at the: {city} city.")
+    if req1[3]:
+        print("The first 3 and last 3 UFO sightings in the city are:")
+        table.field_names = ["datetime", "city", "state", "country", "shape", "duration (seconds)"]
+        table.align = "c"
+        table.hrules = pt.ALL
+        for i in lt.iterator(req1[4]):
+            vals = []
+            for j in table.field_names:
+                vals.append(i[j])
+            table.add_row(vals)
+        for i in lt.iterator(req1[5]):
+            vals = []
+            for j in table.field_names:
+                vals.append(i[j])
+            table.add_row(vals)
+        print(table)
+
+def printCountSightingsDuration(req2,lower,upper):
+    tableLongest = PrettyTable()
+    print(f"{'='*10} Req No. 2 Inputs {'='*10}")
+    print(f"UFO Sightings between {lower} and {upper}",end="\n\n")
+    print(f"{'='*10} Req No. 2 Answers {'='*10}")
+    print(f"There are {req2[0]} different durations of UFO sightings...")
+    print("The longest UFO sighting is:")
+    tableLongest.field_names = ["duration (seconds)", "count"]
+    tableLongest.hrules = pt.ALL
+    tableLongest.add_row([req2[1][0], req2[1][1]])
+    print(tableLongest, end="\n\n")
+    print(f"There are {req2[2]} sightings between: {lower} and {upper} duration.")
+    tablefl3 = PrettyTable()
+    tablefl3.hrules = pt.ALL
+    tablefl3.field_names = ["datetime", "city", "state", "country", "shape", "duration (seconds)"]
+    print("The first 3 and last 3 UFO sightings in the duration time are:")
+
+    for i in lt.iterator(req2[3]):
+        vals = []
+        for j in tablefl3.field_names:
+            vals.append(i[j])
+        tablefl3.add_row(vals)
+
+    for i in range(lt.size(req2[4]),0,-1):
+        sight = lt.getElement(req2[4],i)
+        vals = []
+        for j in tablefl3.field_names:
+            vals.append(sight[j])
+        tablefl3.add_row(vals)        
+
+    print(tablefl3)
+
+def printCountSightingsDateRange(req4, lowDate, upDate):
+    tableOldest = PrettyTable()
+    print(f"{'='*10} Req No. 4 Inputs {'='*10}")
+    print(f"UFO Sightings between {lowDate} and {upDate}",end="\n\n")
+    print(f"{'='*10} Req No. 4 Answers {'='*10}")
+    print(f"There are {req4[0]} UFO sightings with different dates [YYYY-MM-DD]...")
+    print("The oldest UFO sighting is:")
+    tableOldest.field_names = ["date", "count"]
+    tableOldest.hrules = pt.ALL
+    tableOldest.add_row([req4[1][0], req4[1][1]])
+    print(tableOldest, end="\n\n")
+    print(f"There are {req4[2]} sightings between: {lowDate} and {upDate} duration.")
+    tablefl3 = PrettyTable()
+    tablefl3.hrules = pt.ALL
+    tablefl3.field_names = ["datetime","date","city", "state", "country", "shape", "duration (seconds)"]
+    print("The first 3 and last 3 UFO sightings in this time are:")
+
+    for i in lt.iterator(req4[3]):
+        vals = []
+        for j in tablefl3.field_names:
+            vals.append(i[j])
+        tablefl3.add_row(vals)
+
+    for i in range(lt.size(req4[4]),0,-1):
+        sight = lt.getElement(req4[4],i)
+        vals = []
+        for j in tablefl3.field_names:
+            vals.append(sight[j])
+        tablefl3.add_row(vals)        
+
+    print(tablefl3)
+
+def printCountSightingsZone(req5, latmin, latmax, longmin, longmax,req):
+    print(f"{'='*10} Req No. {req} Inputs {'='*10}")
+    print(f"UFO Sightings between latitude range of {latmin} and {latmax}")
+    print(f" plus longitude range of {longmin} and {longmax}")
+    print(f"{'='*10} Req No. {req} Answers {'='*10}")
+    print(f"There are {req5[0]} different UFO sightings in the current area")
+    tablefl5 = PrettyTable()
+    tablefl5.hrules = pt.ALL
+    tablefl5.field_names = ["datetime","city", "state", "country", "shape", "duration (seconds)", "latitude", "longitude"]
+    print("The first 5 and last 5 UFO sightings in this area are:")
+    if req5[1]:
+        for i in lt.iterator(req5[2]):
+            vals = []
+            for j in tablefl5.field_names:
+                vals.append(i[j])
+            tablefl5.add_row(vals)
+        for i in lt.iterator(req5[3]):
+            vals = []
+            for j in tablefl5.field_names:
+                vals.append(i[j])
+            tablefl5.add_row(vals)    
+    else:
+        for i in lt.iterator(req5[2]):
+            vals = []
+            for j in tablefl5.field_names:
+                vals.append(i[j])
+            tablefl5.add_row(vals)
+    print(tablefl5)
 
 """
 Menu principal
@@ -91,15 +208,54 @@ while True:
     
     elif  int(inputs[0]) == 3:
         city = input("\nIngrese el nombre de la ciudad a consultar: ")
-        avistamientos = controller.avistaCity(catalog, city)
-        #if avistamientos:
-        print("\nAltura del árbol: " + str(om.height(catalog['city'])) )
-        print("Elementos en el árbol: " + str(om.size(catalog['city'])) +"\n")
-        printAvistaCity (avistamientos, city)
+        req1 = controller.countSightingsCity(catalog, city)
+        if req1:
+            print(len(req1))
+            printAvistaCity(req1, city)
+        else:
+            print("No ingreso una ciudad validad intente nuevamente")
+    
+    elif int(inputs[0]) == 4:
+        try:
+            lower = float(input("Ingrese la duración en segundos minima (puede tener decimales"))
+            upper = float(input("Ingrese la duración en segundos maxima (puede tener decimales)"))
+            if lower <= upper:
+                req2 = controller.countSightingsDuration(catalog, lower, upper)
+                printCountSightingsDuration(req2,lower,upper)
+            else:
+                print("lower debe ser menor que upper")
+        except:
+            print("Los valores deben ser numeros")
 
-        #else:
-            #print("\nIngrese una ciudad disponible")
+    elif int(inputs[0]) == 5:
+        pass
 
+    elif int(inputs[0]) == 6:
+        lowDate = input("Ingrese la fecha minima (AAAA-MM-DD)")
+        upDate = input("Ingrese la fecha maxima (AAAA-MM-DD)")
+        try:
+            req4 = controller.countSightingsDateRange(catalog, lowDate, upDate)
+            printCountSightingsDateRange(req4, lowDate, upDate)
+        except:
+            print("Las fechas ingresadas no son validas")
+
+    elif int(inputs[0]) == 7:
+        latmin = float(input("Ingrese la latitud minima"))
+        latmax = float(input("Ingrese la latitud maxima"))
+        longmin = float(input("Ingrese la longitud minima"))
+        longmax = float(input("Ingrese la longitud maxima"))
+        req5 = controller.countSightingsZone(catalog, latmin, latmax, longmin, longmax)
+        printCountSightingsZone(req5, latmin, latmax, longmin, longmax,5)
+
+    elif int(inputs[0]) == 8:
+        latmin = float(input("Ingrese la latitud minima"))
+        latmax = float(input("Ingrese la latitud maxima"))
+        longmin = float(input("Ingrese la longitud minima"))
+        longmax = float(input("Ingrese la longitud maxima"))
+        req6 = controller.createMapReq5(catalog, latmin, latmax, longmin, longmax)
+        printCountSightingsZone(req6,latmin,latmax,longmin,longmax,6)
+        
+    
     else:
         sys.exit(0)
 sys.exit(0)
