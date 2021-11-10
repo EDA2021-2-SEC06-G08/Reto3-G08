@@ -35,10 +35,6 @@ from datetime import datetime as dt
 import folium
 assert cf
 
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
 
 # Construccion de modelos
 def newCatalog():
@@ -49,6 +45,9 @@ def newCatalog():
     catalog["duration"] = om.newMap("RBT")
     catalog["Date"] = om.newMap("RBT")
     catalog["latitude"] = om.newMap("RBT")
+    catalog["hour"] = om.newMap("RBT")
+
+
     
     return catalog
     
@@ -79,6 +78,15 @@ def addAvist(catalog, avist):
     else:
         om.put(catalog['Date'], avist['datetime'].date(), lt.newList("ARRAY_LIST"))
         lt.addLast(me.getValue(om.get(catalog['Date'], avist['datetime'].date())),avist)
+
+    #llenar arbol con llave hora
+    if om.contains(catalog["hour"], avist["datetime"].time()):
+        lt.addLast(me.getValue(om.get(catalog["hour"], avist["datetime"].time())), avist)
+    else:
+        om.put(catalog['hour'], avist['datetime'].time(), lt.newList("ARRAY_LIST"))
+        lt.addLast(me.getValue(om.get(catalog['hour'], avist['datetime'].time())),avist)
+
+
 
     #llenar el arbol con llave latitude
     roundLong = round(avist["longitude"],2)
@@ -142,8 +150,6 @@ def countSightingsCity(catalog, city):
 
 
 
-
-
 #Requerimiento 2
 def countSightingsDuration(catalog, lower, upper):
     dur = catalog["duration"]
@@ -179,6 +185,30 @@ def countSightingsDuration(catalog, lower, upper):
             break
     
     return (numDifs, (maxDur, countMax), numSights, first3, last3)
+
+
+#Requerimiento 3
+def sightingsByHour(catalog, ihour, fhour):
+    ihour = dt.strptime(ihour, "%H:%M").time()
+    fhour = dt.strptime(fhour, "%H:%M").time()
+    rta = {}
+    maxKey = om.maxKey(catalog["hour"])
+    rta["latestHour"] = maxKey
+    rta["numLatestSightings"] = lt.size(me.getValue(om.get(catalog["hour"], maxKey)))
+    listaSightingsByHour = om.values(catalog["hour"], ihour, fhour)
+    lista = lt.newList("ARRAY_LIST")
+    for i in lt.iterator(listaSightingsByHour):
+        for j in lt.iterator(i):
+            dicc = {"Fecha": dt.strftime(j["datetime"],"%Y-%m-%d" ), "Hora": dt.strftime(j["datetime"], "%H:%M"),
+             "Ciudad": j["city"], "País": j["country"], "Duración (s)": j["duration (seconds)"], "Forma": j["shape"]}
+            lt.addLast(lista, dicc)
+    rta["numSightings"] = lt.size(lista)
+    ms.sort(lista, cmpSightingsreq3)
+    rta["first3"] = lt.subList(lista, 1, 3)
+    rta["last3"] = lt.subList(lista, lt.size(lista)-2, 3)
+    return rta
+
+
 
 #Requerimiento 4
 def countSightingsDateRange(catalog, lowDate, upDate):
@@ -218,6 +248,9 @@ def countSightingsDateRange(catalog, lowDate, upDate):
         if lt.size(last3) == 3:
                 break
     return (numSights, (minDate, countMin), numinRange, first3, last3)
+
+
+
 
 #Requerimiento 5
 def countSightingsZone(catalog, latmin, latmax, longmin, longmax):
@@ -332,5 +365,17 @@ def valuesRange(root, keylo, keyhi, lstvalues, cmpfunction):
         return lstvalues
 
 # Funciones utilizadas para comparar elementos dentro de una lista
+
+def cmpSightingsreq3 (sighting1, sighting2):
+    if sighting1["Hora"] < sighting2["Hora"]:
+        return True
+    elif sighting1["Hora"] == sighting2["Hora"]:
+        if sighting1["Fecha"] < sighting2["Fecha"]:
+            return True
+        else:
+            return False
+    else:
+        return False
+
 
 # Funciones de ordenamiento

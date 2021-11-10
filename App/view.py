@@ -125,6 +125,27 @@ def printCountSightingsDuration(req2,lower,upper):
 
     print(tablefl3)
 
+
+def printSightingsByHour(rta, ihour, fhour):
+    print("\n"+40*"="+" Req. No. 3 Inputs "+40*"=")
+    print(f"UFO sightings between {ihour} and {fhour}")
+    print("\n"+40*"="+" Req. No. 3 Answer "+40*"=")
+    print(f"The latest UFO sightings time is {rta['latestHour']} with {rta['numLatestSightings']} sightings")
+    print(f"\nThere are {rta['numSightings']} sightings between {ihour} and {fhour}")
+    print("The first 3 and last 3 UFO sightings in this time are:")
+    print("\nFirst 3:")
+    j = 1
+    for i in lt.iterator(rta["first3"]):
+        print(f"{j}. {i}\n")
+        j += 1
+    print("\nLast 3:")
+    j = 1
+    for i in lt.iterator(rta["last3"]):
+        print(f"{j}. {i}\n")
+        j += 1
+
+
+
 def printCountSightingsDateRange(req4, lowDate, upDate):
     tableOldest = PrettyTable()
     print(f"{'='*10} Req No. 4 Inputs {'='*10}")
@@ -228,7 +249,14 @@ while True:
             print("Los valores deben ser numeros")
 
     elif int(inputs[0]) == 5:
-        pass
+        ihour = input("Ingrese hora mínima del día (HH:MM): ")
+        fhour = input("Ingrese hora máxima del día (HH:MM): ")
+        #try:
+        req3 = controller.sightingsByHour(catalog, ihour, fhour)
+        printSightingsByHour(req3, ihour, fhour)
+        #except:
+            #print("En rango de horas no es válido")
+    
 
     elif int(inputs[0]) == 6:
         lowDate = input("Ingrese la fecha minima (AAAA-MM-DD)")

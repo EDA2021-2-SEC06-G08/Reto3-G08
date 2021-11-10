@@ -51,6 +51,9 @@ def countSightingsCity(catalog, city):
 def countSightingsDuration(catalog ,lower, upper):
     return model.countSightingsDuration(catalog,lower, upper)
 
+def sightingsByHour(catalog, ihour, fhour):
+    return model.sightingsByHour(catalog, ihour, fhour)
+
 def countSightingsDateRange(catalog, lowDate, upDate):
     return model.countSightingsDateRange(catalog, lowDate, upDate)
 
