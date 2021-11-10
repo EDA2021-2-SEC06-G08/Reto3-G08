@@ -238,8 +238,8 @@ while True:
     
     elif int(inputs[0]) == 4:
         try:
-            lower = float(input("Ingrese la duración en segundos minima (puede tener decimales"))
-            upper = float(input("Ingrese la duración en segundos maxima (puede tener decimales)"))
+            lower = float(input("Ingrese la duración en segundos minima (puede tener decimales): "))
+            upper = float(input("Ingrese la duración en segundos maxima (puede tener decimales): "))
             if lower <= upper:
                 req2 = controller.countSightingsDuration(catalog, lower, upper)
                 printCountSightingsDuration(req2,lower,upper)
@@ -251,16 +251,16 @@ while True:
     elif int(inputs[0]) == 5:
         ihour = input("Ingrese hora mínima del día (HH:MM): ")
         fhour = input("Ingrese hora máxima del día (HH:MM): ")
-        #try:
-        req3 = controller.sightingsByHour(catalog, ihour, fhour)
-        printSightingsByHour(req3, ihour, fhour)
-        #except:
-            #print("En rango de horas no es válido")
+        try:
+            req3 = controller.sightingsByHour(catalog, ihour, fhour)
+            printSightingsByHour(req3, ihour, fhour)
+        except:
+            print("\nEn rango de horas no es válido\n")
     
 
     elif int(inputs[0]) == 6:
-        lowDate = input("Ingrese la fecha minima (AAAA-MM-DD)")
-        upDate = input("Ingrese la fecha maxima (AAAA-MM-DD)")
+        lowDate = input("Ingrese la fecha minima (AAAA-MM-DD): ")
+        upDate = input("Ingrese la fecha maxima (AAAA-MM-DD): ")
         try:
             req4 = controller.countSightingsDateRange(catalog, lowDate, upDate)
             printCountSightingsDateRange(req4, lowDate, upDate)
@@ -268,18 +268,18 @@ while True:
             print("Las fechas ingresadas no son validas")
 
     elif int(inputs[0]) == 7:
-        latmin = float(input("Ingrese la latitud minima"))
-        latmax = float(input("Ingrese la latitud maxima"))
-        longmin = float(input("Ingrese la longitud minima"))
-        longmax = float(input("Ingrese la longitud maxima"))
+        latmin = float(input("Ingrese la latitud minima: "))
+        latmax = float(input("Ingrese la latitud maxima: "))
+        longmin = float(input("Ingrese la longitud minima: "))
+        longmax = float(input("Ingrese la longitud maxima: "))
         req5 = controller.countSightingsZone(catalog, latmin, latmax, longmin, longmax)
         printCountSightingsZone(req5, latmin, latmax, longmin, longmax,5)
 
     elif int(inputs[0]) == 8:
-        latmin = float(input("Ingrese la latitud minima"))
-        latmax = float(input("Ingrese la latitud maxima"))
-        longmin = float(input("Ingrese la longitud minima"))
-        longmax = float(input("Ingrese la longitud maxima"))
+        latmin = float(input("Ingrese la latitud minima: "))
+        latmax = float(input("Ingrese la latitud maxima: "))
+        longmin = float(input("Ingrese la longitud minima: "))
+        longmax = float(input("Ingrese la longitud maxima: "))
         req6 = controller.createMapReq5(catalog, latmin, latmax, longmin, longmax)
         printCountSightingsZone(req6,latmin,latmax,longmin,longmax,6)
         
